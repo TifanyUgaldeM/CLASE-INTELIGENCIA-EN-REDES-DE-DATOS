@@ -1,4 +1,82 @@
-HI
+ una funcion que clasifique diferentes tareas y las asigne a ciertos servidores.
+usando el algoritmo PSO.
 
-3
+public class Discrete_ParticleUpdate {
 
+    Discrete_PSO_Swarm swarm;
+
+    // A random weight r1.
+    private final double WEIGHT_R1 = 0.2d;
+    // The cognitive acceleration coefficient c1.
+    private final double COGNIT_COEFFICIENT = 0.5d;
+
+    // A random weight r2.
+    private final double WEIGHT_R2 = 0.2d;
+    // The social coefficient
+    private final double SOCIAL_COEFFICIENT = 0.5d;
+
+    public Discrete_ParticleUpdate() {
+    }
+
+    /** Update particle's velocity and position */
+    public void update(Discrete_PSO_Swarm swarm, Discrete_Particle particle) {
+        this.swarm = swarm;
+
+        // Get the particle's current position and velocity
+        double[] currentPosition = particle.getPosition();
+        double[] currentVelocity = particle.getVelocity();
+
+        // Get the best position of the particle (pBest)
+        double[] pBestPosition = particle.getBestPosition();
+
+        // Get the global best position (gBest) from the swarm
+        double[] gBestPosition = swarm.getGlobalBestPosition();
+
+        // New velocity for each dimension
+        double[] newVelocity = new double[currentVelocity.length];
+        double[] newPosition = new double[currentPosition.length];
+
+        // Update velocity and position for each dimension
+        for (int i = 0; i < currentVelocity.length; i++) {
+            // Generate random numbers r1 and r2
+            double r1 = Math.random();
+            double r2 = Math.random();
+
+            // Update velocity (PSO velocity equation)
+            newVelocity[i] = currentVelocity[i]
+                    + COGNIT_COEFFICIENT * r1 * (pBestPosition[i] - currentPosition[i])
+                    + SOCIAL_COEFFICIENT * r2 * (gBestPosition[i] - currentPosition[i]);
+
+            // Update position (simple discrete step)
+            // In a discrete setting, you may round or threshold the result for binary/discrete spaces
+            newPosition[i] = currentPosition[i] + newVelocity[i];
+
+            // If the problem is discrete, adjust the position to the nearest valid value (e.g., 0 or 1)
+            newPosition[i] = Math.round(newPosition[i]);
+        }
+
+        // Set the particle's new velocity and position
+        particle.setVelocity(newVelocity);
+        particle.setPosition(newPosition);
+
+        // Evaluate new position and possibly update pBest
+        particle.evaluateAndUpdateBest();
+    }
+}
+public void analizarMejorSolucionPorCoste(Particle particle) {
+    // Obtener la posición actual de la partícula (esto depende de cómo definas la clase Particle)
+    double[] position = particle.getPosition();
+
+    // Recorrer los servidores (asegúrate de tener una lista de servidores)
+    for (Servidor servidor : listaDeServidores) {  // Asumiendo que tienes una lista de servidores
+        // Comprobar si el coste es mejor o igual y la velocidad es mayor o igual
+        if (servidor.getCost() <= this.globalCost && servidor.getVelocity() >= this.globalVelocity) {
+            // Actualizar la mejor solución global (coste y velocidad)
+            this.globalCost = servidor.getCost();
+            this.globalVelocity = servidor.getVelocity();
+        }
+    }
+
+    // Mostrar el mejor coste encontrado
+    System.out.println("Mejor coste global: " + globalCost);
+    System.out.println("Mejor velocidad global: " + globalVelocity);
