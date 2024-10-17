@@ -1,0 +1,17 @@
+ Discrete_Particle particula6 = new Discrete_Particle();
+            Allocation b1136 = new Allocation(c1, vm2, servidor1);
+            Allocation b2136 = new Allocation(c2, vm2, servidor1);
+            Allocation b4336 = new Allocation(c4, vm3, servidor2);
+            Allocation b3416 = new Allocation(c3, vm3, servidor2);
+            Allocation b5416 = new Allocation(c5, vm4, servidor3);
+            Allocation b6416 = new Allocation(c6, vm4, servidor3);
+            
+            particula6.getPosition().add(b1136);
+            particula6.getPosition().add(b2136);
+            particula6.getPosition().add(b4336);
+            particula6.getPosition().add(b3416);
+            particula6.getPosition().add(b5416);
+            particula6.getPosition().add(b6416);
+            
+            
+            particles.add(particula6);    
